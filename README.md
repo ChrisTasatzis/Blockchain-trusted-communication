@@ -14,13 +14,13 @@ This a demo web application that lets users communicate securely through the blo
 - Add a .env file in the directory that contains a key called MNEMONIC and value the Mnemonic shown on ganache
 - Migrate the smart contract to Ganache using the following commands
 ```
-- npm install
-- truffle migrate --network ganache_local
+npm install
+truffle migrate --network ganache_local
 ```
 - Import two accounts from ganache to metamask (The first one is always the owner) 
 - Start the web app 
 ```
-- cd Client
-- npm install
-- npm run start
+cd Client
+npm install
+npm run start
 ```
