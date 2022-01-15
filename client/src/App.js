@@ -97,15 +97,15 @@ class App extends Component {
     }
 
     listenToSendToken = () => {
-        this.trustedGroupInstance.events.SToken({ _to: this.accounts[0] }).on("data", this.updateGroupToken);
+        this.trustedGroupInstance.events.SToken({fromBlock:'latest', _to: this.accounts[0] }).on("data", this.updateGroupToken);
     }
 
-    listenToReqToken = async () => {
-        this.trustedGroupInstance.events.ReqToken({}).on("data", this.sendGroupToken);
+    listenToReqToken = () => {
+        this.trustedGroupInstance.events.ReqToken({fromBlock:'latest'}).on("data", this.sendGroupToken);
     }
 
-    listenToMessages = async () => {
-        this.trustedGroupInstance.events.Comm({}).on("data", this.appendMessage);
+    listenToMessages = () => {
+        this.trustedGroupInstance.events.Comm({fromBlock:'latest'}).on("data", this.appendMessage);
     }
 
     sendGroupToken = async (ev) => {
@@ -152,6 +152,7 @@ class App extends Component {
     }
 
     sendMessage = async () => {
+
         try {
             // Check if we have the token
             if (this.state.groupToken === "")
@@ -169,6 +170,7 @@ class App extends Component {
     }
 
     appendMessage = (ev) => {
+        debugger;
         // Decrypt the message with the group token
         var message = cryptojs.AES.decrypt(ev.returnValues._encMessage, this.state.groupToken).toString(cryptojs.enc.Utf8)
 
