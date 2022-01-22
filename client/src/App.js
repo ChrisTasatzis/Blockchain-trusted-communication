@@ -5,7 +5,6 @@ import RSAKey from "react-native-rsa";
 import cryptojs from "crypto-js"
 import "./App.css";
 
-
 class App extends Component {
     state = {
         loaded: false,
@@ -155,8 +154,10 @@ class App extends Component {
 
         try {
             // Check if we have the token
-            if (this.state.groupToken === "")
+            if (this.state.groupToken === "") {
                 alert("Please enter the group token")
+                return;
+            }
 
             // Encrypt the message with the token 
             var encryptedMessage = cryptojs.AES.encrypt(this.state.Message, this.state.groupToken).toString();
@@ -169,13 +170,17 @@ class App extends Component {
         }
     }
 
-    appendMessage = (ev) => {
-        debugger;
+    appendMessage = (ev) => {        
         // Decrypt the message with the group token
-        var message = cryptojs.AES.decrypt(ev.returnValues._encMessage, this.state.groupToken).toString(cryptojs.enc.Utf8)
+        var messageValue = cryptojs.AES.decrypt(ev.returnValues._encMessage, this.state.groupToken).toString(cryptojs.enc.Utf8)
+        var messageKey = ev.id;
+
+        // Check if the message has already been appended
+        if(this.state.Messages.findIndex(item => item.key === messageKey) >= 0)
+            return;
 
         // Add the message to the state
-        this.state.Messages.push(message)
+        this.state.Messages.push({key: messageKey, value: messageValue})
         this.setState({ Messages: this.state.Messages });
     }
 
@@ -214,7 +219,7 @@ class App extends Component {
         const List = ({ items }) => (
             <ul>
               {
-                items.map((item, i) => <li key={i}>{item}</li>)
+                items.map((item) => <li key={item.key}>{item.value}</li>)
               }
             </ul>
           );
