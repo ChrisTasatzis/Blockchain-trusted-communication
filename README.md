@@ -3,7 +3,7 @@ This a demo web application that lets users communicate securely through the blo
 
 # Prequisites
 - [Metamask](https://metamask.io)
-- [Truffles Suite](https://trufflesuite.com)
+- [Truffle Suite](https://trufflesuite.com)
 - [Ganache](https://trufflesuite.com/ganache/)
 - [Node.js](https://nodejs.org/en/)
 
