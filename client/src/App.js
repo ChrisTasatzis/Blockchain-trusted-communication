@@ -132,7 +132,10 @@ class App extends Component {
     updateGroupToken = async (ev) => {
         try {
             // Retrieve ecrypted token from event
+            var receiver = ev.returnValues._to;
             var encToken = ev.returnValues._encToken;
+
+            if (receiver !== this.accounts[0]) return;
 
             // Setup rsa with the private key
             var rsa = new RSAKey();
@@ -155,7 +158,7 @@ class App extends Component {
         try {
             // Check if we have the token
             if (this.state.groupToken === "") {
-                alert("Please enter the group token")
+                alert("Please request the group token")
                 return;
             }
 
@@ -171,6 +174,9 @@ class App extends Component {
     }
 
     appendMessage = (ev) => {        
+        // Check if user does not have the group token
+        if (this.state.groupToken === '') return;
+
         // Decrypt the message with the group token
         var messageValue = cryptojs.AES.decrypt(ev.returnValues._encMessage, this.state.groupToken).toString(cryptojs.enc.Utf8)
         var messageKey = ev.id;
@@ -201,17 +207,11 @@ class App extends Component {
         }
 
         const requestGroupToken = () => {
-            if (this.state.isOwner) {
-                return <div>
-                    <h2>Group Token </h2>
-                    <textarea name="groupToken" value={this.state.groupToken} onChange={this.handleInputChange}></textarea><br />
-                </div>
-            }
-            else {
+            if (!this.state.isOwner) {
                 return <div>
                     <h2>Request Group Token </h2>
                     <button type="button" onClick={this.handleReqToken}>Request</button><br />
-                    <textarea name="groupToken" value={this.state.groupToken} onChange={this.handleInputChange}></textarea><br />
+                    <input type="hidden" name="groupToken" value={this.state.groupToken} onChange={this.handleInputChange}></input>
                 </div>
             }
         }
